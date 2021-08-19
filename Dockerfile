@@ -20,6 +20,8 @@ RUN wget https://downloads.isc.org/isc/bind9/${BIND9_VERSION}/bind-${BIND9_VERSI
 
 FROM ubuntu:20.04
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update -y && \
     apt-get install -y libssl-dev libuv1-dev && \
     apt-get clean && \
