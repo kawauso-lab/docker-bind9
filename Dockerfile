@@ -7,7 +7,7 @@ WORKDIR /usr/local/src
 
 RUN apt-get update -y && \
     apt-get install -y wget tar python3-dev python3-ply build-essential pkg-config && \
-    apt-get install -y libssl-dev libffi-dev libuv1-dev 
+    apt-get install -y libssl-dev libffi-dev libuv1-dev libnghttp2-dev
 
 RUN wget https://downloads.isc.org/isc/bind9/${BIND9_VERSION}/bind-${BIND9_VERSION}.tar.xz && \
     tar Jxfv bind-${BIND9_VERSION}.tar.xz && \
@@ -20,8 +20,10 @@ RUN wget https://downloads.isc.org/isc/bind9/${BIND9_VERSION}/bind-${BIND9_VERSI
 
 FROM ubuntu:20.04
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update -y && \
-    apt-get install -y libssl-dev libuv1-dev && \
+    apt-get install -y libssl-dev libuv1-dev libnghttp2-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
