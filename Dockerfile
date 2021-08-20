@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS builder
+FROM ubuntu:20.04
 ENV BIND9_VERSION 9.17.17
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -7,27 +7,22 @@ WORKDIR /usr/local/src
 
 RUN apt-get update -y && \
     apt-get install -y wget tar python3-dev python3-ply build-essential pkg-config && \
-    apt-get install -y libssl-dev libffi-dev libuv1-dev libnghttp2-dev
-
-RUN wget https://downloads.isc.org/isc/bind9/${BIND9_VERSION}/bind-${BIND9_VERSION}.tar.xz && \
+    apt-get install -y libssl-dev libffi-dev libuv1-dev libnghttp2-dev && \
+    \
+    wget https://downloads.isc.org/isc/bind9/${BIND9_VERSION}/bind-${BIND9_VERSION}.tar.xz && \
     tar Jxfv bind-${BIND9_VERSION}.tar.xz && \
     cd bind-${BIND9_VERSION}/ && \
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig && \
     LDFLAGS=-ldl && \
     ./configure --disable-linux-caps && \
     make -j 4 && \
-    make install
-
-FROM ubuntu:20.04
-
-ENV DEBIAN_FRONTEND noninteractive
-
-RUN apt-get update -y && \
-    apt-get install -y libssl-dev libuv1-dev libnghttp2-dev && \
+    make install && \
+    \
+    apt-get update -y && \
+    apt-get remove --purge wget tar python3-dev python3-ply build-essential pkg-config && \
+    apt-get autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-COPY --from=builder /usr/local/sbin/named /usr/local/sbin/named
 
 RUN useradd named && \
     mkdir -p /var/named && \
