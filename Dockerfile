@@ -1,13 +1,9 @@
-FROM ubuntu:20.04
+FROM alpine:3.14
 ENV BIND9_VERSION 9.16.20
-
-ENV DEBIAN_FRONTEND noninteractive
 
 WORKDIR /usr/local/src
 
-RUN apt-get update -y && \
-    apt-get install -y wget tar python3-dev python3-ply build-essential pkg-config && \
-    apt-get install -y libssl-dev libffi-dev libuv1-dev && \
+RUN apk --no-cache add wget tar xz make gcc g++ pkgconfig linux-headers py3-ply perl perl-doc libuv-dev openssl-dev && \
     wget https://downloads.isc.org/isc/bind9/${BIND9_VERSION}/bind-${BIND9_VERSION}.tar.xz && \
     tar Jxfv bind-${BIND9_VERSION}.tar.xz && \
     cd bind-${BIND9_VERSION}/ && \
@@ -16,13 +12,11 @@ RUN apt-get update -y && \
     ./configure --disable-linux-caps && \
     make -j 4 && \
     make install && \
-    apt-get update -y && \
-    apt-get remove --purge wget tar python3-dev python3-ply build-essential pkg-config && \
-    apt-get autoremove && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apk del --purge wget tar xz make gcc g++ pkgconfig linux-headers py3-ply perl perl-doc && \
+    cd /usr/local/src/ && \
+    rm -r bind-${BIND9_VERSION} && rm bind-${BIND9_VERSION}.tar.xz
 
-RUN useradd named && \
+RUN adduser -D named && \
     mkdir -p /var/named && \
     chown named:named -R /var/named/ && \
     mkdir -p /run/named && \
