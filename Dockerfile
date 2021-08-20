@@ -7,7 +7,7 @@ WORKDIR /usr/local/src
 
 RUN apt-get update -y && \
     apt-get install -y wget tar python3-dev python3-ply build-essential pkg-config && \
-    apt-get install -y libssl-dev libffi-dev libuv1-dev libnghttp2-dev && \
+    apt-get install -y libssl-dev libffi-dev libuv1-dev && \
     \
     wget https://downloads.isc.org/isc/bind9/${BIND9_VERSION}/bind-${BIND9_VERSION}.tar.xz && \
     tar Jxfv bind-${BIND9_VERSION}.tar.xz && \
