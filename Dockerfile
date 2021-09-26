@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
-ENV BIND9_PPA isc/bind-dev
-ENV BIND9_PACKAGE 1:9.17.18-1+ubuntu21.04.1+isc+1
+ENV BIND9_PPA isc/bind
+ENV BIND9_PACKAGE 1:9.16.21-1+ubuntu21.04.1+isc+1 
 
 ENV DEBIAN_FRONTEND noninteractive
 
