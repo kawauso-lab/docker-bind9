@@ -4,8 +4,6 @@ It is a docker image of bind9.
 
 [Open Docker Hub](https://hub.docker.com/r/kawausolab/bind9/)
 
-To deal with vulnerabilities, I need to be able to secure the version.
-
 # Usage
 
 1. Check out [Docker Hub](https://hub.docker.com/r/kawausolab/bind9/tags) to see what tags are available. This example uses 9.16.20. 
